@@ -1,26 +1,22 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
+import Header from "@/components/Header.js";
+import Footer from "@/components/Footer.js";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Cake recepis",
-  description: "cake recepes check names check recepe",
+  title: "Recipes",
+  description: "Recipes? check. names check. categorie",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <h1>Next Routing</h1>
-        <nav>
-          <Link href="/">Home</Link>
-          <Link href="/about">About</Link>
-          <Link href="/contact">Contact</Link>
-          <Link href="/posts">Posts</Link>
-        </nav>
-        {children}
+        <Header />
+        <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

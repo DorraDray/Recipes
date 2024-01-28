@@ -1,15 +1,33 @@
 import Link from "next/link";
-
-export default async function Postspage() {
-  const response = await fetch("https://jsonplaceholder.typicode.com/posts");
-  let posts = await response.json();
+import { sql } from "@vercel/postgres";
+export default async function Recipespage({ searchParams }) {
+  const recipes = await sql`SELECT * FROM recipes`;
+  if (searchParams.sort === "desc") {
+    recipes.rows.reverse();
+  }
   return (
-    <div>
-      <h2>My posts</h2>
-      {posts.map((post) => {
+    <div className="container mx-auto p-4">
+      <h2 className="text-3xl font-bold mb-4">My Recipes</h2>
+      <div className="mb-4">
+        <Link className="text-blue-500 hover:underline mr-4" href="/recipes">
+          Sort to normal
+        </Link>
+        <Link
+          className="text-blue-500 hover:underline"
+          href="/recipes?sort=desc"
+        >
+          Sort desc
+        </Link>
+      </div>
+      {recipes.rows.map((recipe) => {
         return (
-          <div key={post.id}>
-            <Link href={`/posts/${post.id}`}>{post.title}</Link>
+          <div className="mb-4" key={recipe.id}>
+            <Link
+              className="text-xl font-semibold text-blue-800 hover:underline"
+              href={`/recipes/${recipe.id}`}
+            >
+              {recipe.name}
+            </Link>
           </div>
         );
       })}
