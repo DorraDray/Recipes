@@ -1,12 +1,12 @@
-// "use client";
-// import { useFormStatus } from "react-dom";
+"use client";
+import { useFormStatus } from "react-dom";
 
-// export default function EditCommentButton() {
-//   const { pending } = useFormStatus();
+export default function EditCommentButton() {
+  const { pending } = useFormStatus();
 
-//   return (
-//     <button disabled={pending} className={pending ? "disabled" : ""}>
-//       {pending ? "Editing your Comment" : "Edit Comment"}
-//     </button>
-//   );
-// }
+  return (
+    <button disabled={pending} className={pending ? "disabled" : ""}>
+      {pending ? "Editing your Comment" : "Edit Comment"}
+    </button>
+  );
+}

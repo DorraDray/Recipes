@@ -3,17 +3,13 @@ import Link from "next/link";
 export default async function SingleRecipePage({ params }) {
   const recipeResult =
     await sql`SELECT * FROM recipes WHERE recipes.id = ${params.id}`;
-  const commentsResult =
-    await sql`SELECT ARRAY_AGG(comments.content) AS comments
-    FROM comments
+  const commentsResult = await sql`SELECT * FROM comments
     JOIN recipes_comments ON comments.id = recipes_comments.comment_id
     JOIN recipes ON recipes_comments.recipe_id = recipes.id
     WHERE recipes.id = ${params.id}`;
 
-  const commentResult = commentsResult.rows[0];
-
   const singleRecipe = recipeResult.rows[0];
-  console.log(commentResult);
+
   const recipeId = singleRecipe.id;
   return (
     <div className="container mx-auto p-4">
@@ -39,15 +35,13 @@ export default async function SingleRecipePage({ params }) {
           Delete
         </Link>
       </div>
-      {commentResult &&
-        commentResult.comments &&
-        commentResult.comments.map((comment, id) => (
-          <div key={id} className="mb-4">
-            <p className="text-gray-600">{comment}</p>
-            {/* i cant figure out how to send the link keep having cant use two id */}
-            {/* <Link href={`/recipes/${params.id}/${comment.Id}`}>Edit</Link> */}
-          </div>
-        ))}
+      {commentsResult.rows.map((comment) => (
+        <div key={comment.id + comment.content} className="mb-4">
+          <p className="text-gray-600">{comment.content}</p>
+          <Link href={`/recipes/${params.id}/${comment.id}`}>Edit</Link>
+          {console.log(comment)}
+        </div>
+      ))}
     </div>
   );
 }
